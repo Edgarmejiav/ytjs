@@ -21,6 +21,7 @@
     function downloadVideo() {
         const videoURL = document.getElementById('videoURL').value;
         if (videoURL) {
+            alert('¡Descarga iniciada!');
             fetch('/download', {
                 method: 'POST',
                 headers: {
@@ -33,9 +34,9 @@
                     console.log(data)
                     if (data.success) {
                         location.href = `/video/?name=${data.title}`;
-                        alert('¡Descarga iniciada!');
+                        alert('¡Descarga terminada!');
                     } else {
-                        alert('Error al iniciar la descarga: ' + data.message);
+                        console.error(data.message)
                     }
                 })
                 .catch(error => {
