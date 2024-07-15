@@ -26,7 +26,6 @@ app.post('/download', (req, res) => {
             // format: 'bestvideo+bestaudio'
             format: 'worst'
         }).then(() => {
-            // res.redirect(`/video?name=${encodeURIComponent(`${title}`)}`);
             res.json({ success: true, title: title });
         }).catch(err => {
             console.error('Error durante la descarga:', err);
