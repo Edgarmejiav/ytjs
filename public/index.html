@@ -31,7 +31,7 @@
     <h2>Descargar Video de YouTube</h2>
     <label for="videoURL"></label>
     <input type="text" id="videoURL" placeholder="Ingrese la URL del video de YouTube">
-    <button onclick="downloadVideo()">Descargar</button>
+    <button id="button" onclick="downloadVideo()">Descargar</button>
     <div id="loader" class="loader"></div>
 
 
@@ -47,9 +47,13 @@
         }
 
         const loader = document.getElementById('loader');
+        const button = document.getElementById('button');
+        button.disabled = true
         loader.style.display = 'block';
 
         try {
+            alert('iniciando descarga...');
+
             const response = await fetch('/download', {
                 method: 'POST',
                 headers: {
@@ -76,6 +80,7 @@
             console.error('Error:', error);
         } finally {
             loader.style.display = 'none';
+            button.disabled = false
         }
     }
 
