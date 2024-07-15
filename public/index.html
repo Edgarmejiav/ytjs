@@ -9,45 +9,76 @@
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
 </head>
+<style>
+    .loader {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none; /* Ocultar inicialmente */
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
 <body>
 <div class="container">
     <h2>Descargar Video de YouTube</h2>
     <label for="videoURL"></label>
     <input type="text" id="videoURL" placeholder="Ingrese la URL del video de YouTube">
     <button onclick="downloadVideo()">Descargar</button>
+    <div id="loader" class="loader"></div>
+
 
 </div>
 
 <script>
-    function downloadVideo() {
-        const videoURL = document.getElementById('videoURL').value;
-        if (videoURL) {
-            alert('¡Descarga iniciada!');
-            fetch('/download', {
+    async function downloadVideo() {
+        const videoURL = document.getElementById('videoURL').value.trim();
+
+        if (!videoURL) {
+            alert('Por favor, ingrese una URL válida.');
+            return;
+        }
+
+        const loader = document.getElementById('loader');
+        loader.style.display = 'block';
+
+        try {
+            const response = await fetch('/download', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url: videoURL })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    if (data.success) {
-                        location.href = `/video/?name=${data.title}`;
-                        alert('¡Descarga terminada!');
-                    } else {
-                        console.error(data.message)
-                    }
-                })
-                .catch(error => {
-                    alert('Error al iniciar la descarga.');
-                    console.error('Error:', error);
-                });
-        } else {
-            alert('Por favor, ingrese una URL válida.');
+                body: JSON.stringify({ url: videoURL }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error al descargar el video: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                location.href = `/video/?name=${encodeURIComponent(data.title)}`;
+                alert('¡Descarga terminada!');
+            } else {
+                console.error(data.message);
+                alert(`Error: ${data.message}`);
+            }
+        } catch (error) {
+            alert('Error al iniciar la descarga.');
+            console.error('Error:', error);
+        } finally {
+            loader.style.display = 'none';
         }
     }
+
 </script>
 </body>
 </html>
