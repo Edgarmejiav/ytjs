@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar Video de YouTube</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+</head>
+<body>
+<div class="container">
+    <h2>Descargar Video de YouTube</h2>
+    <input type="text" id="videoURL" placeholder="Ingrese la URL del video de YouTube">
+    <button onclick="downloadVideo()">Descargar</button>
+    <video width="640" height="360" controls>
+        <source src="/video" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+</div>
+
+<script>
+    function downloadVideo() {
+        const videoURL = document.getElementById('videoURL').value;
+        if (videoURL) {
+            fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: videoURL })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('¡Descarga iniciada!');
+                    } else {
+                        alert('Error al iniciar la descarga: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al iniciar la descarga.');
+                });
+        } else {
+            alert('Por favor, ingrese una URL válida.');
+        }
+    }
+</script>
+</body>
+</html>
