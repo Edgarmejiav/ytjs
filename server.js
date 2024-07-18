@@ -70,9 +70,15 @@ app.get('/delete', (req, res) => {
     })
 })
 
-app.get('/', (req, res) => {
+app.get('/ap', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+
+app.get('/hi', (req, res) => {
+    res.send("Hola mundo");
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
