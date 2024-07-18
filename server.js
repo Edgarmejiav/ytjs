@@ -16,7 +16,7 @@ app.post('/download', (req, res) => {
     if (!videoURL) {
         return res.status(400).json({ success: false, message: 'URL no proporcionada' });
     }
-    res.json({ success: true, title: res.body.url })
+    res.json({ success: true, title: "title" })
 
     // youtubedl(videoURL, { dumpSingleJson: true }).then(info => {
     //     const title = info.title.replace(/[^a-zA-Z0-9]/g, '_');
