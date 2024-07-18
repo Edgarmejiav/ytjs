@@ -10,13 +10,8 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use('/videos', express.static(path.join(__dirname, 'videos')));
 
-app.post('/download', (req, res) => {
-    const videoURL = req.body.url;
-
-    if (!videoURL) {
-        return res.status(400).json({ success: false, message: 'URL no proporcionada' });
-    }
-    res.json({ success: true, title: "title" })
+app.get('/download', (req, res) => {
+    res.send('GET request to the homepage')
 
     // youtubedl(videoURL, { dumpSingleJson: true }).then(info => {
     //     const title = info.title.replace(/[^a-zA-Z0-9]/g, '_');
