@@ -34,7 +34,6 @@
     <button id="button" onclick="downloadVideo()">Descargar</button>
     <div id="loader" class="loader"></div>
 
-
 </div>
 
 <script>
@@ -55,7 +54,7 @@
             alert('iniciando descarga...');
 
             const response = await fetch('/download', {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -69,7 +68,7 @@
             const data = await response.json();
 
             if (data.success) {
-                location.href = `/video/?name=${encodeURIComponent(data.title)}`;
+                // location.href = `/video/?name=${encodeURIComponent(data.title)}`;
                 alert('¡Descarga terminada!');
             } else {
                 console.error(data.message);
